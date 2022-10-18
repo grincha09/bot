@@ -1,0 +1,64 @@
+function draw() {
+    const name = 'speedbar';
+    bar = document.querySelector(`[id=${name}]`);
+    if(bar)
+        return;
+
+    if(!document.querySelector('video'))
+        return;
+
+    let div = document.createElement('div');
+    div.style.position = 'fixed';
+    div.style.zIndex = 9999;
+    div.style.left = div.style.top = 0;
+    div.style.width = div.style.height = '30%';
+    div.onmouseover = e => {
+        bar.style.display = '';
+    }
+    div.onmouseout = e => {
+        bar.style.display = 'none';
+    }
+    
+    bar = document.createElement('div');
+    bar.id = name;
+    bar.style.display = 'none';
+    
+    let text = document.createElement('div');
+    text.style.background='rgb(255,255,255)';
+    text.style.color='rgb(0,0,0)';
+    bar.appendChild(text);
+    
+    let range = document.createElement('input');
+    range.type = 'range';
+    range.min = 1;
+    range.max = 6;
+    range.step = 0.1;
+    
+    const change = (target, diff=0) => {
+        let speed = (parseFloat(target.value) + diff).toFixed(1);
+        target.value = speed;
+        bar.querySelector('div').innerText = target.value;
+        document.querySelectorAll('video').forEach((e) => {
+            e.playbackRate = speed;
+        });
+    };
+    
+    div.onwheel = e => {
+        e.preventDefault();
+        let diff = e.deltaY < 0 ? 1 : -1;
+        change(range, diff * range.step);
+    }
+    
+    range.oninput = e => {
+        change(range);
+    }
+    
+    bar.appendChild(range);
+    
+    div.appendChild(bar);
+    document.body.parentElement.appendChild(div);
+    
+    range.value = 1;
+    bar.querySelector('div').innerText = 1;
+}
+draw();
