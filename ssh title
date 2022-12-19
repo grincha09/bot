@@ -1,0 +1,15 @@
+.bashrc
+
+...
+
+function test(){
+        #echo $SHLVL
+        if [[ $SHLVL -gt 1 ]]; then
+                /usr/bin/ssh "$@"
+        else
+                echo -ne "\033]0;$@\007"
+                TERM=gnome-256color /usr/bin/ssh "$@"
+        fi
+}
+
+alias ssh='test'
