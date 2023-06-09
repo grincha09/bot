@@ -8,7 +8,9 @@ function test(){
                 /usr/bin/ssh "$@"
         else
                 echo -ne "\033]0;$@\007"
-                TERM=gnome-256color /usr/bin/ssh "$@"
+                # есть не на всех серверах по умолчанию
+                #TERM=gnome-256color /usr/bin/ssh "$@"
+                TERM=screen-256color /usr/bin/ssh "$@"
         fi
 }
 
